@@ -40,7 +40,7 @@ const loader = new GLTFLoader();
 
 
 
-loader.load( '/assets/files_3d/exaustor_gltf/exaustor.gltf', function ( gltf ) {
+loader.load( './public/assets/files_3d/exaustor_gltf/exaustor.gltf', function ( gltf ) {
     scene.add( gltf.scene );
     
     
@@ -57,7 +57,7 @@ loader.load( '/assets/files_3d/exaustor_gltf/exaustor.gltf', function ( gltf ) {
     const pmremGenerator = new PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
 
-    rgbeLoader.load('/assets/enviroments/warewouse.hdr', function (texture) {
+    rgbeLoader.load('./public/assets/enviroments/warewouse.hdr', function (texture) {
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         pmremGenerator.dispose();
 

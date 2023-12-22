@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './public/index.js', // Seu arquivo de entrada
+  entry: './index.js', // Seu arquivo de entrada
   output: {
     filename: 'bundle.js', // O arquivo de saída
     path: path.resolve(__dirname, 'dist'), // O diretório de saída
@@ -25,12 +25,12 @@ module.exports = {
   // Configurações para resolver os módulos do Three.js
   resolve: {
     alias: {
-      'three': path.resolve('../node_modules/three')
+      'three': path.resolve('./node_modules/three')
     }
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'),
+      directory: path.join(__dirname, '/'),
     },
     // ... outras configurações
   }
