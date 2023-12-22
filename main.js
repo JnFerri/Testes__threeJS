@@ -13,6 +13,7 @@ scene.background = new THREE.Color('white')
 
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -21,11 +22,27 @@ elemento.appendChild( renderer.domElement );
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
+let targetPosition = new THREE.Vector4(); // Cria um novo vetor 3D
+camera.getWorldDirection(targetPosition); // Obtém a direção da câmera
+targetPosition = targetPosition.multiplyScalar(-1).add(camera.position); // Calcula a posição atual do alvo
+
+// Agora, ajuste o alvo
+targetPosition.y += 1; // Aumenta um pouco no eixo y (por exemplo, 1 unidade)
+targetPosition.z += -1;
+
+// Faz a câmera olhar para o novo alvo
+camera.lookAt(targetPosition);
+controls.target.copy(targetPosition)
+controls.update()
+
 const loader = new GLTFLoader();
 
 new THREE.WebGLRenderer({ antialias: true });
 
+
 loader.load( '/assets/files_3d/exaustor gltf/exaustor.gltf', function ( gltf ) {
+    
+
     const ambientLight = new THREE.AmbientLight(0xffffff, 1); // cor branca, intensidade 0.5
     scene.add(ambientLight);
 
