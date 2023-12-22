@@ -1,0 +1,19 @@
+{
+  "name": "animacao3d",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development --open"
+  },
+  "author": "jean ferri",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  }
+}
