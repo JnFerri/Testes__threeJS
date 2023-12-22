@@ -1,3 +1,27 @@
 body {
     background: linear-gradient(rgb(49, 107, 141),rgb(25, 73, 105),rgb(1, 25, 41));
 }
+
+.localPost{
+    margin: 0 20px;
+    width: 60%;
+    align-items: center;
+}
+
+.localPost canvas{
+    width: 100%;
+    height: auto;
+}
+
+.exaustor_box{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.exaustor_texto_box{
+    margin: 0 20px;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}

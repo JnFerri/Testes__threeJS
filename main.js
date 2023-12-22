@@ -141,20 +141,17 @@ scene.traverse((obj) => {
     const correctionPass = new ShaderPass(colorCorrectionShader);
     composer.addPass(correctionPass);
     renderer.setPixelRatio(window.devicePixelRatio)
-    gltf.scene.scale.set(1, 1, 1);
+    gltf.scene.scale.set(1.3, 1.3, 1.3);
 
-    var newWidth = window.innerWidth - 100
-    var newHeight = window.innerHeight - 100
-        
-    // Ajusta o tamanho do renderer
-    renderer.setSize(newWidth, newHeight);
+  
         
         camera.position.z = 4;
   
+    
         
     function animate() {
         requestAnimationFrame( animate );
-        
+        renderer.setSize( elemento.offsetWidth , elemento.offsetHeight );
         composer.render(scene, camera);
         
         }
