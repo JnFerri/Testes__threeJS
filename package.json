@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development --open"
+    "start": "webpack-dev-server --mode development --open"
   },
   "author": "jean ferri",
   "license": "ISC",
   "devDependencies": {
+    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {

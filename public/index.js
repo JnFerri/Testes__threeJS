@@ -6,6 +6,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { PMREMGenerator } from 'three';
 
 const scene = new THREE.Scene();
 scene.background = null
@@ -39,7 +40,7 @@ const loader = new GLTFLoader();
 
 
 
-loader.load( '/assets/files_3d/exaustor gltf/exaustor.gltf', function ( gltf ) {
+loader.load( '/assets/files_3d/exaustor_gltf/exaustor.gltf', function ( gltf ) {
     scene.add( gltf.scene );
     
     
