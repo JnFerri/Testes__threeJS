@@ -9,18 +9,18 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { PMREMGenerator } from 'three/src/extras/PMREMGenerator.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('white')
+scene.background = null
 
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha:true, },);
 renderer.setSize( window.innerWidth, window.innerHeight );
-
 const elemento = document.getElementById('localPost')
 elemento.appendChild( renderer.domElement );
 
 const controls = new OrbitControls( camera, renderer.domElement );
+
 
 let targetPosition = new THREE.Vector4(); // Cria um novo vetor 3D
 camera.getWorldDirection(targetPosition); // Obtém a direção da câmera
@@ -37,12 +37,13 @@ controls.update()
 
 const loader = new GLTFLoader();
 
-new THREE.WebGLRenderer({ antialias: true });
+
 
 
 loader.load( '/assets/files_3d/exaustor gltf/exaustor.gltf', function ( gltf ) {
+    scene.add( gltf.scene );
     
-
+    
     const ambientLight = new THREE.AmbientLight(0xffffff, 1); // cor branca, intensidade 0.5
     scene.add(ambientLight);
 
@@ -142,18 +143,18 @@ scene.traverse((obj) => {
     renderer.setPixelRatio(window.devicePixelRatio)
     gltf.scene.scale.set(1, 1, 1);
 
-    var newWidth = 800; 
-    var newHeight = 600; 
+    var newWidth = window.innerWidth - 100
+    var newHeight = window.innerHeight - 100
         
     // Ajusta o tamanho do renderer
     renderer.setSize(newWidth, newHeight);
-        scene.add( gltf.scene );
+        
         camera.position.z = 4;
-
+  
         
     function animate() {
         requestAnimationFrame( animate );
-            
+        
         composer.render(scene, camera);
         
         }
