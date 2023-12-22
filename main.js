@@ -10,88 +10,139 @@ import { PMREMGenerator } from 'three/src/extras/PMREMGenerator.js';
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('white')
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+
 const elemento = document.getElementById('localPost')
 elemento.appendChild( renderer.domElement );
+
 const controls = new OrbitControls( camera, renderer.domElement );
+
 const loader = new GLTFLoader();
+
 new THREE.WebGLRenderer({ antialias: true });
 
 loader.load( '/assets/files_3d/exaustor gltf/exaustor.gltf', function ( gltf ) {
-	const ambientLight = new THREE.AmbientLight(0xffffff, 1); // cor branca, intensidade 0.5
-	scene.add(ambientLight);
-	const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-	directionalLight.position.set(10, -10, 5);
-	scene.add(directionalLight);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1); // cor branca, intensidade 0.5
+    scene.add(ambientLight);
 
-	const composer = new EffectComposer(renderer);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(10, -10, 5);
+    scene.add(directionalLight);
 
-	const rgbeLoader = new RGBELoader();
-const pmremGenerator = new PMREMGenerator(renderer);
-pmremGenerator.compileEquirectangularShader();
+    const composer = new EffectComposer(renderer);
 
-rgbeLoader.load('/assets/enviroments/warewouse.hdr', function (texture) {
-    const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-    pmremGenerator.dispose();
+    const rgbeLoader = new RGBELoader();
+    const pmremGenerator = new PMREMGenerator(renderer);
+    pmremGenerator.compileEquirectangularShader();
 
-    // Aplica o mapa de ambiente à cena
-    scene.environment = envMap;
-});
+    rgbeLoader.load('/assets/enviroments/warewouse.hdr', function (texture) {
+        const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+        pmremGenerator.dispose();
 
-const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-composer.addPass(bloomPass);
-composer.addPass(new RenderPass(scene, camera));
+        // Aplica o mapa de ambiente à cena
+        scene.environment = envMap;
+    });
 
-const colorCorrectionShader = {
-    uniforms: {
-        tDiffuse: { value: null },
-        // Adicione outros uniforms se necessário
-    },
-    vertexShader: `
-        varying vec2 vUv;
-        void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+    composer.addPass(bloomPass);
+    composer.addPass(new RenderPass(scene, camera));
+
+    const colorCorrectionShader = {
+        uniforms: {
+            tDiffuse: { value: null },
+            // Adicione outros uniforms se necessário
+        },
+        vertexShader: `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform sampler2D tDiffuse;
+            varying vec2 vUv;
+
+            void main() {
+                vec4 texture = texture2D(tDiffuse, vUv);
+
+                // Aplicar correções de cor
+                texture.rgb = pow(texture.rgb, vec3(0.9)); // Exemplo: ajuste de gama
+
+                gl_FragColor = texture;
+            }
+        `
+    };
+
+    const sharpenShader = {
+        uniforms: {
+            "tDiffuse": { value: null },
+            "amount": { value: 0.5 }
+        },
+        vertexShader: `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform sampler2D tDiffuse;
+            uniform float amount;
+            varying vec2 vUv;
+            void main() {
+                vec2 uv = vUv;
+                float strength = 1.0 + amount;
+                // Definir os offsets para pixels vizinhos
+                vec2 offset[9];
+                offset[0] = vec2(-1.0, -1.0);
+                offset[1] = vec2(0.0, -1.0);
+                // ... (complete os outros offsets)
+                // Calcule a nitidez
+                vec4 color = texture2D(tDiffuse, uv);
+                // ... (aplique a lógica de sharpen aqui)
+                gl_FragColor = color;
+            }
+        `
+    };
+    const sharpenPass = new ShaderPass(sharpenShader);
+composer.addPass(sharpenPass);
+
+renderer.toneMapping = THREE.ReinhardToneMapping; // Ou outro algoritmo de sua escolha
+renderer.toneMappingExposure = 3.0; // Ajuste conforme necessário
+
+scene.traverse((obj) => {
+    if (obj.material) {
+      obj.material.needsUpdate = true;
+    }
+  });
+    const correctionPass = new ShaderPass(colorCorrectionShader);
+    composer.addPass(correctionPass);
+    renderer.setPixelRatio(window.devicePixelRatio)
+    gltf.scene.scale.set(1, 1, 1);
+
+    var newWidth = 800; 
+    var newHeight = 600; 
+        
+    // Ajusta o tamanho do renderer
+    renderer.setSize(newWidth, newHeight);
+        scene.add( gltf.scene );
+        camera.position.z = 4;
+
+        
+    function animate() {
+        requestAnimationFrame( animate );
+            
+        composer.render(scene, camera);
+        
         }
-    `,
-    fragmentShader: `
-        uniform sampler2D tDiffuse;
-        varying vec2 vUv;
 
-        void main() {
-            vec4 texture = texture2D(tDiffuse, vUv);
+        animate();
 
-            // Aplicar correções de cor
-            texture.rgb = pow(texture.rgb, vec3(0.9)); // Exemplo: ajuste de gama
-
-            gl_FragColor = texture;
-        }
-    `
-};
-
-const correctionPass = new ShaderPass(colorCorrectionShader);
-composer.addPass(correctionPass);
-renderer.setPixelRatio(window.devicePixelRatio)
-	gltf.scene.scale.set(20, 20, 20);
-	var newWidth = 800; // Substitua com a nova largura desejada
-	var newHeight = 600; // Substitua com a nova altura desejada
-	
-// Ajusta o tamanho do renderer
-renderer.setSize(newWidth, newHeight);
-	scene.add( gltf.scene );
-	
-	camera.position.z = 5;
-	
-	function animate() {
-		requestAnimationFrame( animate );
-		
-		composer.render(scene, camera);
-	}
-	animate();
 }, undefined, function ( error ) {
 
 	console.error( error );
