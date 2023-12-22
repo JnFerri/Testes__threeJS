@@ -9546,7 +9546,7 @@
 					"baseColorFactor": [
 						0.5731589, 0.5417984, 0.5113978, 1
 					]
-					,"metallicFactor": 0
+					,"metallicFactor": 1
 					,"roughnessFactor": 0.3449184
 				}
 				,"alphaMode": "OPAQUE"
@@ -9651,7 +9651,7 @@
 					"baseColorFactor": [
 						0.05099997, 0.05099997, 0.05099997, 1
 					]
-					,"metallicFactor": 0
+					,"metallicFactor": 1
 					,"roughnessFactor": 0.75016
 				}
 				,"alphaMode": "OPAQUE"
@@ -9916,7 +9916,7 @@
 					"baseColorFactor": [
 						0.5731589, 0.5417984, 0.5113978, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.5260732
 				}
 				,"alphaMode": "OPAQUE"
@@ -9961,7 +9961,7 @@
 					"baseColorFactor": [
 						0.5731589, 0.5417984, 0.5113978, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.5260732
 				}
 				,"alphaMode": "OPAQUE"
@@ -10051,7 +10051,7 @@
 					"baseColorFactor": [
 						0.5731589, 0.5417984, 0.5113978, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.5260732
 				}
 				,"alphaMode": "OPAQUE"
@@ -10111,7 +10111,7 @@
 					"baseColorFactor": [
 						0.5731589, 0.5417984, 0.5113978, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.5260732
 				}
 				,"alphaMode": "OPAQUE"
@@ -10126,7 +10126,7 @@
 					"baseColorFactor": [
 						0.8122415, 0.8122415, 0.8122415, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.2885821
 				}
 				,"alphaMode": "OPAQUE"
@@ -10388,7 +10388,7 @@
 					"baseColorFactor": [
 						0.8122415, 0.8122415, 0.8122415, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.2885821
 				}
 				,"alphaMode": "OPAQUE"
@@ -10418,7 +10418,7 @@
 					"baseColorFactor": [
 						0.5731589, 0.5417984, 0.5113978, 1
 					]
-					,"metallicFactor": 1
+					,"metallicFactor": 0
 					,"roughnessFactor": 0.5260732
 				}
 				,"alphaMode": "OPAQUE"
